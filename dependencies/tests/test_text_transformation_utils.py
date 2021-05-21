@@ -58,8 +58,11 @@ class TestOrderInAlphabet(unittest.TestCase):
     def test_wrong_type(self):
         with self.assertRaises(TypeError):
             order_in_alphabet(4)
-        with self.assertRaises(TypeError):
+
+    def test_wrong_value(self):
+        with self.assertRaises(ValueError):
             order_in_alphabet("ASD")
+
 
 
 class TestShiftLetterForward(unittest.TestCase):
@@ -80,6 +83,10 @@ class TestShiftLetterForward(unittest.TestCase):
         with self.assertRaises(TypeError):
             shift_letter_forward(2, 'a')
 
+    def test_wrong_value(self):
+        with self.assertRaises(ValueError):
+            shift_letter_forward('ad', 2)
+
 
 class TestShiftLetterBackward(unittest.TestCase):
     # shift_back(str, int) -> str
@@ -98,6 +105,10 @@ class TestShiftLetterBackward(unittest.TestCase):
             shift_letter_backward(2, 2)
         with self.assertRaises(TypeError):
             shift_letter_backward(2, 'a')
+
+    def test_wrong_value(self):
+        with self.assertRaises(ValueError):
+            shift_letter_backward('ad', 2)
 
 
 class TestToLetter(unittest.TestCase):
@@ -118,8 +129,14 @@ class TestPossibleShift(unittest.TestCase):
     # find_possible_shift(str, float):
 
     def test_possible_shift(self):
-        self.assertEqual(set(find_possible_shift('a', 7.5)), set([0, 7, 9, 12, 13, 18]))
-        self.assertEqual(set(find_possible_shift('c', 7.5)), set([2, 9, 11, 14, 15, 20]))
+        self.assertEqual(set(find_possible_shift('a', 7.5)),
+                         set([0, 7, 9, 12, 13, 18]))
+        self.assertEqual(set(find_possible_shift('c', 7.5)),
+                         set([2, 9, 11, 14, 15, 20]))
+
+    def test_wrong_value(self):
+        with self.assertRaises(ValueError):
+            find_possible_shift('ad', 2.0)
 
 
 if __name__ == '__main__':

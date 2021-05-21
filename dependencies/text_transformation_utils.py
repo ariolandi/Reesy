@@ -1,9 +1,10 @@
 from .constants import *
-from .decorators import verify_types, upper
+from .decorators import verify_types, upper, onlySymbol
 
 
 @verify_types(str)
 @upper
+@onlySymbol
 def order_in_alphabet(letter):
     return ord(letter) - ALPHABET_START
 
@@ -38,13 +39,13 @@ def shift_letter_backward(letter, positions):
     return to_letter(shift_backward(order_in_alphabet(letter), positions))
 
 
-
 @verify_types(float, float, difference=float)
 def _is_possible_key(letter_fr, key_fr, difference=MAX_DIFFERENCE):
     return abs(letter_fr - key_fr) <= difference
 
 
 @verify_types(str, float)
+@onlySymbol
 def find_possible_shift(letter, frequency):
     posible_decoding = [order_in_alphabet(p_letter)
                         for p_letter, letter_fr in LETTER_STATISTIC.items()

@@ -1,5 +1,6 @@
 from dependencies.text_transformation_utils\
     import shift_letter_forward, find_possible_shift
+from dependencies.text_recognition_utils import is_english_text
 from string import ascii_letters as LETTERS
 from dependencies.common import *
 
@@ -28,26 +29,31 @@ def caesar_with_key(text, key):
 
 def caesar(text):
     possible_keys = filter_keys(text)
-    print(type(possible_keys[0]))
-    return [caesar_with_key(text, key) for key in possible_keys]
+    all_texts = [caesar_with_key(text, key) for key in possible_keys]
+    return [text for text in all_texts if is_english_text(text)]
 
 
 if __name__ == '__main__':
+    def test(message, key):
+        crypted = caesar_with_key(message, key)
+        print(crypted)
+        print(filter_keys(crypted))
+
+        decrypted = caesar(crypted)
+        print(decrypted)
+        print(message.upper() in decrypted)
+
     message = "We tell the word our secrets in language it doesn't understand."
     crypted = "Zh whoo wkh zrug rxu vhfuhwv lq odqjxdjh lw grhvq'w xqghuvwdqg."
     key = 3
 
-    message2 = "The greater the uncertainty, the bigger the gap between\
-what you can measure and what matters, the more you should watch\
+    message2 = "The greater the uncertainty, the bigger the gap between \
+what you can measure and what matters, the more you should watch \
 out for overfitting - that is, the more you should prefer simplicity"
-    crypted2 = "Wkh juhdwhu wkh xqfhuwdlqwb, wkh eljjhu wkh jds ehwzhhq\
-zkdw brx fdq phdvxuh dqg zkdw pdwwhuv, wkh pruh brx vkrxog zdwfk\
+    crypted2 = "Wkh juhdwhu wkh xqfhuwdlqwb, wkh eljjhu wkh jds ehwzhhq \
+zkdw brx fdq phdvxuh dqg zkdw pdwwhuv, wkh pruh brx vkrxog zdwfk \
 rxw iru ryhuilwwlqj - wkdw lv, wkh pruh brx vkrxog suhihu vlpsolflwb"
     key2 = 3
-    print(caesar_with_key(crypted, key))
-    print(filter_keys(crypted))
 
-    print(caesar_with_key(crypted2, key2))
-    print(filter_keys(crypted2))
-
-    print(caesar(crypted))
+    test(message, key)
+    test(message2, key2)
