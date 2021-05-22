@@ -15,11 +15,14 @@ class TestTypeOf(unittest.TestCase):
         self.assertEqual(type_of([]), [])
         self.assertEqual(type_of([3, 2, 4]), [int])
         self.assertEqual(type_of(['a']), [str])
+        self.assertEqual(type_of([[4]]), [[int]])
+        self.assertEqual(type_of([[]]), [[]])
 
     def test_type_of_list_of_types(self):
         self.assertEqual(type_of([]), [])
         self.assertEqual(type_of([int]), [int])
         self.assertEqual(type_of([list]), [list])
+        self.assertEqual(type_of([[int]]), [[int]])
 
 
 class TestIsType(unittest.TestCase):
@@ -28,6 +31,9 @@ class TestIsType(unittest.TestCase):
         self.assertTrue(is_type([int], [int]))
         self.assertTrue(is_type([], [int]))
         self.assertTrue(is_type([int], []))
+        self.assertTrue(is_type([[int]], [[int]]))
+        self.assertTrue(is_type([[int]], [[]]))
+        self.assertTrue(is_type([[]], [[int]]))
 
 
 if __name__ == '__main__':

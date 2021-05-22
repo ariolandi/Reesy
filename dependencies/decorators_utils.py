@@ -13,21 +13,31 @@ def type_of(x):
         return y if type(y) is type else type(y)
 
     if type(x) is list:
-        return [_type(x[0])] if x != [] else []
+        return [type_of(x[0])] if x != [] else []
     else:
         return _type(x)
 
 
 def arguments_types(*args, **kwargs):
+    """
+    Returns a dictionary with all arguments' types
+    in the according possitions/keywords.
+    """
+
     types = {position: type_of(x) for position, x in enumerate(args)}
     types.update({key: type_of(x) for (key, x) in kwargs.items()})
     return types
 
 
 def is_type(actual_type, expected_type):
+    """
+    Checks if two types are equal.
+    Note that a [] as a type is equal with [T] with any type T.
+    """
+
     def _equal_list_types(type1, type2):
         return type(type1) is list and type(type2) is list and\
-            (not type1 or not type2 or type1[0] == type2[0])
+            (not type1 or not type2 or is_type(type1[0], type2[0]))
 
     return actual_type == expected_type or\
         _equal_list_types(actual_type, expected_type)
