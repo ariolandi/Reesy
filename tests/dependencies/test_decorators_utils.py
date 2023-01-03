@@ -1,5 +1,5 @@
 import unittest
-from ..decorators_utils import *
+from dependencies.decorators_utils import type_of, is_type
 
 
 class TestTypeOf(unittest.TestCase):

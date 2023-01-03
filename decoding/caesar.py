@@ -1,59 +1,43 @@
 from dependencies.text_transformation_utils\
-    import shift_letter_forward, find_possible_shift
-from dependencies.text_recognition_utils import is_english_text
+    import shift_letter, find_possible_shift
+from dependencies.text_recognition_utils import text_statistics, is_valid_text
 from string import ascii_letters as LETTERS
-from dependencies.common import *
-
-
-def text_statistic(text):
-    all_letters = len(filter_list((lambda x: x.isalpha()), text))
-    return {letter: text.count(letter) / all_letters for letter in LETTERS}
+from dependencies.common import filter_list, count_values, flatten, filter_dict
 
 
 def filter_keys(text):
-    frequency_table = text_statistic(text)
+    """
+    Decides which keys are most likely used for the cipher.
+    Uses the frequence table to decide if a given key is possible or not
+    and returns only these key with above average probability.
+    """
+
+    frequency_table = text_statistics(text)
     keys_possibility = count_values(flatten(
-        [find_possible_shift(letter, frequency_table[letter])
-         for letter in LETTERS]))
+                        [find_possible_shift(letter, frequency_table[letter])
+                         for letter in LETTERS]))
+
     avrg_value = sum(keys_possibility.values()) / len(keys_possibility)
-    return filter_dict_keys((lambda y: y > avrg_value), keys_possibility)
+
+    return filter_dict((lambda y: y >= avrg_value), keys_possibility).keys()
 
 
-def transform(x, key):
-    return shift_letter_forward(x, key) if x.isalpha() else x
+def transform(symbol, key):
+    """
+    Transforms a symbol with a given key (offset) if it is a letter.
+    If the passed symbol is not a letter (punctuation, spacetab or number)
+    it returns the symbol itself without transforming it.
+    """
+
+    return shift_letter(symbol, key) if symbol.isalpha() else symbol
 
 
 def caesar_with_key(text, key):
-    return "".join([transform(x, key) for x in text])
+    return ''.join([transform(x, key) for x in text])
 
 
 def caesar(text):
     possible_keys = filter_keys(text)
+
     all_texts = [caesar_with_key(text, key) for key in possible_keys]
-    return [text for text in all_texts if is_english_text(text)]
-
-
-if __name__ == '__main__':
-    def test(message, key):
-        crypted = caesar_with_key(message, key)
-        print(crypted)
-        print(filter_keys(crypted))
-
-        decrypted = caesar(crypted)
-        print(decrypted)
-        print(message.upper() in decrypted)
-
-    message = "We tell the word our secrets in language it doesn't understand."
-    crypted = "Zh whoo wkh zrug rxu vhfuhwv lq odqjxdjh lw grhvq'w xqghuvwdqg."
-    key = 3
-
-    message2 = "The greater the uncertainty, the bigger the gap between \
-what you can measure and what matters, the more you should watch \
-out for overfitting - that is, the more you should prefer simplicity"
-    crypted2 = "Wkh juhdwhu wkh xqfhuwdlqwb, wkh eljjhu wkh jds ehwzhhq \
-zkdw brx fdq phdvxuh dqg zkdw pdwwhuv, wkh pruh brx vkrxog zdwfk \
-rxw iru ryhuilwwlqj - wkdw lv, wkh pruh brx vkrxog suhihu vlpsolflwb"
-    key2 = 3
-
-    test(message, key)
-    test(message2, key2)
+    return filter_list(is_valid_text, all_texts)

@@ -3,12 +3,7 @@ def filter_list(func, ls):
 
 
 def filter_dict(func, dct):
-    filtered = list(filter((lambda y: func(y[1])), dct.items()))
-    return {key: value for (key, value) in filtered}
-
-
-def filter_dict_keys(func, dct):
-    return list(filter_dict(func, dct).keys())
+    return {key: value for (key, value) in dct.items() if func(value)}
 
 
 def flatten(ls):
