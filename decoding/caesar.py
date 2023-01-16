@@ -3,8 +3,10 @@ from dependencies.text_transformation_utils\
 from dependencies.text_recognition_utils import text_statistics, is_valid_text
 from string import ascii_letters as LETTERS
 from dependencies.common import filter_list, count_values, flatten, filter_dict
+from dependencies.decorators import verify_only_symbol, verify_types
 
 
+@verify_types(str)
 def filter_keys(text):
     """
     Decides which keys are most likely used for the cipher.
@@ -22,6 +24,8 @@ def filter_keys(text):
     return filter_dict((lambda y: y >= avrg_value), keys_possibility).keys()
 
 
+@verify_types(str, int)
+@verify_only_symbol
 def transform(symbol, key):
     """
     Transforms a symbol with a given key (offset) if it is a letter.
@@ -32,10 +36,12 @@ def transform(symbol, key):
     return shift_letter(symbol, key) if symbol.isalpha() else symbol
 
 
+@verify_types(str, int)
 def caesar_with_key(text, key):
     return ''.join([transform(x, key) for x in text])
 
 
+@verify_types(str)
 def caesar(text):
     possible_keys = filter_keys(text)
 

@@ -42,6 +42,12 @@ class TestCaesarCipher(unittest.TestCase):
 
         self.assertIn(self.message.upper(), caesar(self.encripted))
 
+    def test_wrong_types(self):
+        with self.assertRaises(TypeError):
+            filter_keys(1)
+        with self.assertRaises(TypeError):
+            filter_keys('a')
+
 
 if __name__ == '__main__':
     unittest.main()
