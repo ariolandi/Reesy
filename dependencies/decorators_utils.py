@@ -7,6 +7,7 @@ def type_of(x):
     Special cases:
     [T], where T is a valid type, expects a list of type T
     [] expects a list of any type
+    (T, S), whete T and S are valid types, expects either T or S 
     """
 
     def _type(y):
@@ -14,6 +15,8 @@ def type_of(x):
 
     if type(x) is list:
         return [type_of(x[0])] if x != [] else []
+    elif type(x) is tuple:
+        return tuple([type_of(y) for y in x])
     else:
         return _type(x)
 
@@ -33,11 +36,18 @@ def is_type(actual_type, expected_type):
     """
     Checks if two types are equal.
     Note that a [] as a type is equal with [T] with any type T.
+    Note that if the expected type is a tuple, then we expect either
+        of the types in the tuple.
     """
 
     def _equal_list_types(type1, type2):
         return type(type1) is list and type(type2) is list and\
             (not type1 or not type2 or is_type(type1[0], type2[0]))
 
+    def _contains_type(actual_type, expected_type):
+        return type(expected_type) is tuple and\
+            any([is_type(actual_type, x) for x in expected_type])
+
     return actual_type == expected_type or\
-        _equal_list_types(actual_type, expected_type)
+        _equal_list_types(actual_type, expected_type) or\
+        _contains_type(actual_type, expected_type)

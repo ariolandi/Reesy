@@ -1,5 +1,6 @@
 from dependencies.constants import (ALPHABET_SIZE, ALPHABET_START,
-                                    LETTER_STATISTIC, MAX_DIFFERENCE)
+                                    LETTER_STATISTIC, MAX_DIFFERENCE,
+                                    SUBSTITUTION_RULES)
 from dependencies.decorators import verify_types, upper, verify_only_symbol
 
 
@@ -59,3 +60,12 @@ def find_possible_shift(letter: str, frequency: float) -> list:
 
     return [shift_backwards(order_in_alphabet(letter), possible_match)
             for possible_match in posible_decoding]
+
+
+@verify_types(str)
+def substitute(text):
+    def transform(x):
+        return SUBSTITUTION_RULES[x]\
+            if x in SUBSTITUTION_RULES.keys() else x
+
+    return ''.join([transform(x) for x in text])

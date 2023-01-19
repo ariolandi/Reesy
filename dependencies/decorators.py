@@ -18,7 +18,7 @@ def verify_types(*args, **kwargs):
                     not is_type(actual_types[position],
                                 expected_types[position]):
                     raise TypeError(f'Argument {position} should be type\
-{expected_types[position]}')
+ {expected_types[position]} instead of {actual_types[position]}')
             return func(*args, **kwargs)
         return decorator
 

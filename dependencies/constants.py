@@ -47,4 +47,6 @@ FREQUENTLY_DOUBLED_LETTERS = ['SS', 'LL', 'OO',  'EE', 'NN', 'PP']
 # Q is unuque for English language - it is always followed by letter U
 FOLLOWING_RILES = {'Q': 'U'}
 
+SUBSTITUTION_RULES = {'_': ' '}
+
 MAX_DIFFERENCE = 1.0

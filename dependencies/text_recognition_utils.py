@@ -1,12 +1,14 @@
 from dependencies.common import filter_list
 from dependencies.constants import FOLLOWING_RILES
 from dependencies.text_transformation_utils import only_letters, to_bigrams
+from dependencies.decorators import verify_types
 from string import ascii_letters as LETTERS
 
 LANGUAGE = 'en'
 DESIRED_LANGUAGE_PROBABILITY = 0.99999
 
 
+@verify_types(str)
 def text_statistics(text):
     """
     Generates the frequence table for a given text.
@@ -17,6 +19,7 @@ def text_statistics(text):
     return {letter: text.count(letter) / all_letters for letter in LETTERS}
 
 
+@verify_types(str)
 def analyze_for_consistency(text):
     """
     Analizes a given text for known rules about the bigrapghs in it.
@@ -27,6 +30,7 @@ def analyze_for_consistency(text):
                 if x in FOLLOWING_RILES.keys()])
 
 
+@verify_types(str)
 def is_english_text(text):
     """"
     Detects the most probable language for a given text.
@@ -41,5 +45,6 @@ def is_english_text(text):
         possible_languages[LANGUAGE] > DESIRED_LANGUAGE_PROBABILITY
 
 
+@verify_types(str)
 def is_valid_text(text):
     return analyze_for_consistency(text) and is_english_text(text)

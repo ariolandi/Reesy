@@ -2,7 +2,7 @@ import unittest
 from dependencies.text_transformation_utils import (
     only_letters, to_bigrams, normalize, shift,
     order_in_alphabet, shift_letter, shift_backwards,
-    to_letter, find_possible_shift)
+    to_letter, find_possible_shift, substitute)
 
 
 class TestOnlyLetters(unittest.TestCase):
@@ -157,6 +157,14 @@ class TestPossibleShift(unittest.TestCase):
     def test_wrong_value(self):
         with self.assertRaises(ValueError):
             find_possible_shift('ad', 2.0)
+            
+
+class TestSubstitute(unittest.TestCase):
+    def test_substitute(self):
+        self.assertEqual(substitute(''), '')
+        self.assertEqual(substitute('_'), ' ')
+        self.assertEqual(substitute('123.jf'), '123.jf')
+        self.assertEqual(substitute('abc_abc'), 'abc abc')
 
 
 if __name__ == '__main__':
