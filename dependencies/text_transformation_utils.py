@@ -64,8 +64,10 @@ def find_possible_shift(letter: str, frequency: float) -> list:
 
 @verify_types(str)
 def substitute(text):
-    def transform(x):
-        return SUBSTITUTION_RULES[x]\
-            if x in SUBSTITUTION_RULES.keys() else x
+    def transform(text, rule, substitute):
+        substitute.join([word for word in text.split(rule) if word])
 
-    return ''.join([transform(x) for x in text])
+    for rule in SUBSTITUTION_RULES.keys():
+        text = transform(text, rule, SUBSTITUTION_RULES[rule])
+
+    return text

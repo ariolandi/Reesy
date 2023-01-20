@@ -31,20 +31,34 @@ def analyze_for_consistency(text):
 
 
 @verify_types(str)
-def is_english_text(text):
+def detect_languages(text):
+    from langdetect import detect_langs
+
+    return {language.lang: language.prob
+            for language in detect_langs(text)}
+
+
+@verify_types(dict)
+def is_english_text(possible_languages):
     """"
     Detects the most probable language for a given text.
     Returns True if that language is English.
     """
 
-    from langdetect import detect_langs
-
-    possible_languages = {language.lang: language.prob
-                          for language in detect_langs(text)}
     return LANGUAGE in possible_languages.keys() and\
         possible_languages[LANGUAGE] > DESIRED_LANGUAGE_PROBABILITY
 
 
 @verify_types(str)
 def is_valid_text(text):
-    return analyze_for_consistency(text) and is_english_text(text)
+    languages = detect_languages(text)
+
+    return (text, languages[LANGUAGE])\
+        if analyze_for_consistency(text) and is_english_text(languages)\
+        else False
+
+
+@verify_types([str])
+def filter_only_valid(text_array):
+    return filter_list(lambda x: x,
+                       [is_valid_text(text) for text in text_array])

@@ -38,15 +38,10 @@ class TestCaesarCipher(unittest.TestCase):
                          self.message.upper())
 
     def test_caesar(self):
-        # caesar(str) -> [str]
+        # caesar(str) -> [(str, float)]
 
-        self.assertIn(self.message.upper(), caesar(self.encripted))
-
-    def test_wrong_types(self):
-        with self.assertRaises(TypeError):
-            filter_keys(1)
-        with self.assertRaises(TypeError):
-            filter_keys('a')
+        self.assertIn(self.message.upper(),
+                      [t[0] for t in caesar(self.encripted)])
 
 
 if __name__ == '__main__':

@@ -1,8 +1,8 @@
 from dependencies.text_transformation_utils\
     import shift_letter, find_possible_shift
-from dependencies.text_recognition_utils import text_statistics, is_valid_text
+from dependencies.text_recognition_utils import text_statistics, filter_only_valid
 from string import ascii_letters as LETTERS
-from dependencies.common import filter_list, count_values, flatten, filter_dict
+from dependencies.common import count_values, flatten, filter_dict
 from dependencies.decorators import verify_only_symbol, verify_types
 
 
@@ -46,4 +46,4 @@ def caesar(text):
     possible_keys = filter_keys(text)
 
     all_texts = [caesar_with_key(text, key) for key in possible_keys]
-    return filter_list(is_valid_text, all_texts)
+    return filter_only_valid(all_texts)

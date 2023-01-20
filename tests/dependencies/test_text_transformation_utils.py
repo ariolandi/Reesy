@@ -162,9 +162,10 @@ class TestPossibleShift(unittest.TestCase):
 class TestSubstitute(unittest.TestCase):
     def test_substitute(self):
         self.assertEqual(substitute(''), '')
-        self.assertEqual(substitute('_'), ' ')
+        self.assertEqual(substitute('_'), '')
         self.assertEqual(substitute('123.jf'), '123.jf')
         self.assertEqual(substitute('abc_abc'), 'abc abc')
+        self.assertEqual(substitute('abc_abc__'), 'abc abc')
 
 
 if __name__ == '__main__':
