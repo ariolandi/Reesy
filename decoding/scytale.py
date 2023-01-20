@@ -1,3 +1,4 @@
+from wordninja import split
 from dependencies.decorators import verify_types
 from dependencies.matrix_utils import chunk, transpose
 from dependencies.text_recognition_utils import filter_only_valid
@@ -15,5 +16,7 @@ def scytale(text):
     text_matrixes = [transpose(chunk(text, i)) for i in possible_bandwidth]
     all_texts = [substitute(''.join([''.join(row) for row in m]))
                  for m in text_matrixes]
-
-    return filter_only_valid(all_texts)
+    
+    valid_texts = filter_only_valid(all_texts)
+    return valid_texts if valid_texts\
+        else filter_only_valid([' '.join(split(text)) for text in all_texts])

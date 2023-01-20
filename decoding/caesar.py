@@ -1,6 +1,7 @@
 from dependencies.text_transformation_utils\
     import shift_letter, find_possible_shift
-from dependencies.text_recognition_utils import text_statistics, filter_only_valid
+from dependencies.text_recognition_utils import (text_statistics,
+                                                 filter_only_valid)
 from string import ascii_letters as LETTERS
 from dependencies.common import count_values, flatten, filter_dict
 from dependencies.decorators import verify_only_symbol, verify_types
