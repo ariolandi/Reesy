@@ -11,6 +11,11 @@ def flatten(ls):
     return [x.item() for x in numpy.concatenate(ls)]
 
 
+def join(ls):
+    ls = filter_list(lambda x: x, ls)
+    return [y for x in ls for y in x]
+
+
 def count_values(ls):
     from collections import Counter
     return Counter(ls)

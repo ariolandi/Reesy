@@ -55,10 +55,9 @@ def is_valid_text(text):
 
     return (text, languages[LANGUAGE])\
         if analyze_for_consistency(text) and is_english_text(languages)\
-        else False
+        else None
 
 
 @verify_types([str])
 def filter_only_valid(text_array):
-    return filter_list(lambda x: x,
-                       [is_valid_text(text) for text in text_array])
+    return filter_list(lambda x: x is not None, [is_valid_text(text) for text in text_array])
