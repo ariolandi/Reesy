@@ -7,7 +7,7 @@ def type_of(x):
     Special cases:
     [T], where T is a valid type, expects a list of type T
     [] expects a list of any type
-    (T, S), whete T and S are valid types, expects either T or S 
+    (T, S), whete T and S are valid types, expects either T or S
     """
 
     def _type(y):

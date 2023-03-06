@@ -9,9 +9,14 @@ def only_letters(text: str) -> list:
     return [x for x in text if x.isalpha()]
 
 
-@verify_types([])
+@verify_types((str, []))
 def to_bigrams(text: list) -> list:
     return [(x, text[i + 1]) for i, x in enumerate(text[:-1])]
+
+
+@verify_types((str, []))
+def to_pairs(text: list) -> list:
+    return [(text[i], text[i + 1]) for i in range(0, len(text), 2)]
 
 
 @verify_types(str)
