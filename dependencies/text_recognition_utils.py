@@ -32,7 +32,8 @@ def analyze_for_consistency(text):
 
 @verify_types(str)
 def detect_languages(text):
-    from langdetect import detect_langs
+    from langdetect import detect_langs, DetectorFactory
+    DetectorFactory.seed = 0
 
     return {language.lang: language.prob
             for language in detect_langs(text)}
