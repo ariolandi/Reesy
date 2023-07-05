@@ -1,29 +1,49 @@
 from dependencies.decorators import verify_types
-from dependencies.text_transformation_utils import to_pairs
+from dependencies.common import equalize_frequences, count_values
+from dependencies.text_transformation_utils import (to_pairs,
+                                                    find_possible_match)
+from dependencies.text_recognition_utils import text_statistics, histogram
+from dependencies.constants import (MAX_DIFFERENCE_REDUCED,
+                                    BIGRAMS_STATISTICS, MAX_BIGRAMS_DIFFERENCE)
 from string import ascii_uppercase as LETTERS
+from pprint import pprint
 
 
-@verify_types([])
-def get_possible_rows(pairs):
-    def get_letter_matches(letter, pairs):
-        return [y if x == letter else x for x, y in set(pairs)
-                if letter in [x, y]]
+def get_possible_rows(pair_possibility, letter_possibility):
+    def _possible_match(pair_a, pair_b):
+        def _possible_decoding(a, b):
+            return a in letter_possibility[b]
 
-    matches = {letter: get_letter_matches(letter, pairs) for letter in LETTERS}
+        return (_possible_decoding(pair_a[0], pair_b[0]) or
+                _possible_decoding(pair_a[1], pair_b[1])) and\
+            pair_a[0] != pair_b[0] and pair_a[1] != pair_b[1]
 
-    possible_rows = []
-    for x in LETTERS:
-        for i, y in enumerate(matches[x]):
-            possible_rows.append(set([x, y] + [z for z in matches[x][i:]
-                                               if z in matches[y]]))
+    pair_possibility = [(key, value) for key, value in pair_possibility.items()]
+    pair_possibility.sort(key=lambda x: len(x[1]))
 
-    return possible_rows
+    possible_decodings = {pair: [(x[0], x[1]) for x in possibility
+                                 if _possible_match(x, pair)]
+                          for pair, possibility in pair_possibility}
 
+    pprint(possible_decodings)
 
 @verify_types(str)
 def playfair(text):
     if len(text) % 2:
-        text.append('A')
+        text.append('_')
+
+    frequency_table = text_statistics(text)
+    letter_possibility = {letter: find_possible_match(frequency_table[letter],
+                                                      MAX_DIFFERENCE_REDUCED)
+                          for letter in LETTERS}
 
     pairs = to_pairs(text)
-    possible_rows = get_possible_rows(pairs)
+    pairs_frequency = equalize_frequences(histogram(pairs), BIGRAMS_STATISTICS)
+
+    pairs_possibility = {pair: find_possible_match(pairs_frequency[pair],
+                                                   MAX_BIGRAMS_DIFFERENCE,
+                                                   BIGRAMS_STATISTICS)
+                         for pair in pairs}
+
+    # pprint(pairs_frequency)
+    get_possible_rows(pairs_possibility, letter_possibility)

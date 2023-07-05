@@ -22,7 +22,7 @@ def filter_keys(text):
                          for letter in LETTERS]))
 
     avrg_value = sum(keys_possibility.values()) / len(keys_possibility)
-    return list(filter_dict((lambda y: y >= avrg_value), keys_possibility).keys())
+    return filter_dict((lambda y: y >= avrg_value), keys_possibility).keys()
 
 
 @verify_types(str, int)
@@ -45,6 +45,5 @@ def caesar_with_key(text, key):
 @verify_types(str)
 def caesar(text):
     possible_keys = filter_keys(text)
-    print(possible_keys)
     all_texts = [caesar_with_key(text, key) for key in possible_keys]
     return filter_only_valid(all_texts)

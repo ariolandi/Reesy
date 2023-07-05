@@ -20,6 +20,12 @@ def text_statistics(text):
             for letter in LETTERS}
 
 
+@verify_types([])
+def histogram(ls):
+    return {x: ls.count(x) * 100 / len(ls)
+            for x in set(ls)}
+
+
 @verify_types(str)
 def analyze_for_consistency(text):
     """

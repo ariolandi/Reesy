@@ -27,3 +27,8 @@ def unique(ls):
 def flatten_sets(ls):
     return [x for (i, x) in enumerate(ls) if
             not any(x.issubset(y) for y in ls[:i])]
+
+
+def equalize_frequences(frequence_table, control_set):
+    offset = max(frequence_table.values()) / max(control_set.values())
+    return {key: (value / offset) for key, value in frequence_table.items()}

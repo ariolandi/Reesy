@@ -15,7 +15,7 @@ class TestCaesarCipher(unittest.TestCase):
     def test_filtering_keys(self):
         # filter_keys(str) -> [int]
 
-        keys = filter_keys(self.message)
+        keys = filter_keys(self.encripted)
         self.assertLess(len(keys), 26)
         self.assertIn(self.reversed_key, keys)
 

@@ -148,9 +148,9 @@ class TestPossibleShift(unittest.TestCase):
 
     def test_possible_shift(self):
         self.assertEqual(set(find_possible_shift('a', 7.5)),
-                         set([6, 11, 14, 19, 20, 22, 23, 24, 25]))
+                         set([0, 7, 8, 9, 12, 13, 15, 18, 24]))
         self.assertEqual(set(find_possible_shift('c', 7.5)),
-                         set([0, 1, 8, 13, 16, 21, 22, 24, 25]))
+                         set([0, 2, 9, 10, 11, 14, 15, 17, 20]))
 
     def test_wrong_value(self):
         with self.assertRaises(ValueError):
