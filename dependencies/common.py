@@ -7,8 +7,7 @@ def filter_dict(func, dct):
 
 
 def flatten(ls):
-    import numpy
-    return [x.item() for x in numpy.concatenate(ls)]
+    return [x for xs in ls for x in xs]
 
 
 def join(ls):
@@ -19,3 +18,12 @@ def join(ls):
 def count_values(ls):
     from collections import Counter
     return Counter(ls)
+
+
+def unique(ls):
+    return [x for (i, x) in enumerate(ls) if x not in ls[:i]]
+
+
+def flatten_sets(ls):
+    return [x for (i, x) in enumerate(ls) if
+            not any(x.issubset(y) for y in ls[:i])]

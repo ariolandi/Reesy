@@ -2,11 +2,12 @@ from dependencies.text_transformation_utils\
     import shift_letter, find_possible_shift
 from dependencies.text_recognition_utils import (text_statistics,
                                                  filter_only_valid)
-from string import ascii_letters as LETTERS
+from string import ascii_uppercase as LETTERS
 from dependencies.common import count_values, flatten, filter_dict
-from dependencies.decorators import verify_only_symbol, verify_types
+from dependencies.decorators import verify_only_symbol, verify_types, upper
 
 
+@upper
 @verify_types(str)
 def filter_keys(text):
     """
@@ -21,8 +22,7 @@ def filter_keys(text):
                          for letter in LETTERS]))
 
     avrg_value = sum(keys_possibility.values()) / len(keys_possibility)
-
-    return filter_dict((lambda y: y >= avrg_value), keys_possibility).keys()
+    return list(filter_dict((lambda y: y >= avrg_value), keys_possibility).keys())
 
 
 @verify_types(str, int)
@@ -45,6 +45,6 @@ def caesar_with_key(text, key):
 @verify_types(str)
 def caesar(text):
     possible_keys = filter_keys(text)
-
+    print(possible_keys)
     all_texts = [caesar_with_key(text, key) for key in possible_keys]
     return filter_only_valid(all_texts)

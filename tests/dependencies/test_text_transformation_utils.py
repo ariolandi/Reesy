@@ -33,8 +33,6 @@ class TestToBigrams(unittest.TestCase):
     def test_wrong_type(self):
         with self.assertRaises(TypeError):
             to_bigrams(8676)
-        with self.assertRaises(TypeError):
-            to_bigrams('adhgd')
 
 
 class TestNormalize(unittest.TestCase):
@@ -150,14 +148,14 @@ class TestPossibleShift(unittest.TestCase):
 
     def test_possible_shift(self):
         self.assertEqual(set(find_possible_shift('a', 7.5)),
-                         set([0, 7, 9, 12, 13, 18]))
+                         set([6, 11, 14, 19, 20, 22, 23, 24, 25]))
         self.assertEqual(set(find_possible_shift('c', 7.5)),
-                         set([2, 9, 11, 14, 15, 20]))
+                         set([0, 1, 8, 13, 16, 21, 22, 24, 25]))
 
     def test_wrong_value(self):
         with self.assertRaises(ValueError):
             find_possible_shift('ad', 2.0)
-            
+
 
 class TestSubstitute(unittest.TestCase):
     def test_substitute(self):

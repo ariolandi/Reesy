@@ -1,13 +1,13 @@
 from dependencies.common import filter_list
 from dependencies.constants import FOLLOWING_RILES
 from dependencies.text_transformation_utils import only_letters, to_bigrams
-from dependencies.decorators import verify_types
-from string import ascii_letters as LETTERS
+from dependencies.decorators import verify_types, upper
+from string import ascii_uppercase as LETTERS
 
 LANGUAGE = 'en'
 DESIRED_LANGUAGE_PROBABILITY = 0.99999
 
-
+@upper
 @verify_types(str)
 def text_statistics(text):
     """
@@ -16,7 +16,8 @@ def text_statistics(text):
 
     all_letters = len(filter_list((lambda x: x.isalpha()), text))
 
-    return {letter: text.count(letter) / all_letters for letter in LETTERS}
+    return {letter: text.count(letter) * 100 / all_letters
+            for letter in LETTERS}
 
 
 @verify_types(str)
@@ -61,4 +62,5 @@ def is_valid_text(text):
 
 @verify_types([str])
 def filter_only_valid(text_array):
-    return filter_list(lambda x: x is not None, [is_valid_text(text) for text in text_array])
+    return filter_list(lambda x: x is not None, [is_valid_text(text)
+                                                 for text in text_array])

@@ -1,5 +1,5 @@
 from dependencies.constants import (ALPHABET_SIZE, ALPHABET_START,
-                                    LETTER_STATISTIC, MAX_DIFFERENCE,
+                                    LETTER_STATISTIC, DIFFERENCE,
                                     SUBSTITUTION_RULES)
 from dependencies.decorators import verify_types, upper, verify_only_symbol
 
@@ -50,18 +50,26 @@ def shift_letter(letter: str, positions: int) -> str:
     return to_letter(shift(order_in_alphabet(letter), positions))
 
 
-@verify_types(float, float, difference=float)
-def _is_possible_key(letter_frequency, key_fr, difference=MAX_DIFFERENCE):
-    return abs(letter_frequency - key_fr) <= difference
+@verify_types(float, float)
+def _is_possible_key(letter_frequency, key_fr, difference=DIFFERENCE):
+    diff = abs(letter_frequency - key_fr)
+    return difference['MIN'] <= diff and diff <= difference['MAX']
+
+
+@verify_types(str, float)
+@verify_only_symbol
+def find_possible_match(letter: str, frequency: float) -> list:
+    return [possible_match
+            for possible_match, letter_fr in LETTER_STATISTIC.items()
+            if _is_possible_key(frequency, letter_fr)]
 
 
 @verify_types(str, float)
 @verify_only_symbol
 def find_possible_shift(letter: str, frequency: float) -> list:
     posible_decoding = [order_in_alphabet(possible_match)
-                        for possible_match, letter_fr
-                        in LETTER_STATISTIC.items()
-                        if _is_possible_key(frequency, letter_fr)]
+                        for possible_match
+                        in find_possible_match(letter, frequency)]
 
     return [shift_backwards(order_in_alphabet(letter), possible_match)
             for possible_match in posible_decoding]
